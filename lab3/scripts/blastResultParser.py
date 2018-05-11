@@ -16,7 +16,7 @@ blastOutputXMLHandle = open (blastOutputXMLFile)
 listOfBlastRecords = NCBIXML.parse (blastOutputXMLHandle)
 
 for aSingleBlastRecord in listOfBlastRecords:
-
+    
 	for i in range (len (aSingleBlastRecord.alignments)):
 
 		description = aSingleBlastRecord.descriptions [i]
