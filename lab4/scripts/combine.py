@@ -1,25 +1,20 @@
-with open('17_parsed', 'r') as filehandle:
-    list_17 = filehandle.read().splitlines()
-    list_17_tags = [[line.split()[0], line.split()[2]] for line in list_17]
+concatenated_alignment = ['>','','>','','>','','>','']
+for i in range(1,11):
+    filename = 'cluster_' + str(i) + '_aligned'
+    with open(filename, 'r') as filehandle:
+        text = filehandle.read().splitlines()
+        alignment = []
+        for index, line in enumerate(text):
+            if line.startswith('>'):
+                alignment.append(line[1:] + '_')
+            else:
+                if text[index - 1].startswith('>'):
+                    alignment.append(line)
+                else:
+                    alignment[-1] = alignment[-1] + line
+        for index in range(len(concatenated_alignment[:])):
+            concatenated_alignment[index] = concatenated_alignment[index] + alignment[index]
 
-with open('49_parsed', 'r') as filehandle:
-    list_49 = filehandle.read().splitlines()
-    list_49_tags = [[line.split()[0], line.split()[2]] for line in list_49]
-
-with open('51_parsed', 'r') as filehandle:
-    list_51 = filehandle.read().splitlines()
-    list_51_tags = [[line.split()[0], line.split()[2]] for line in list_51]
-
-combined = list_17_tags[:]
-for index, i in enumerate(combined[:]):
-    for j in list_49_tags:
-        if i[0] == j[0]:
-            combined[index].append(j[1])
-for index, i in enumerate(combined[:]):
-    for j in list_51_tags:
-        if i[0] == j[0]:
-            combined[index].append(j[1])
-
-with open('cluster', 'w') as filehandle:
-    for item in combined:
-        filehandle.write(' '.join(item) + '\n')
+with open('metagene_aligned', 'w') as filehandle:
+    for line in concatenated_alignment:
+        filehandle.write(line + '\n')

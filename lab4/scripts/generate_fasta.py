@@ -9,7 +9,7 @@ with open(cluster_file, 'r') as filehandle:
 items = text.split()
 
 for item in items:
-    print('>' + item)
+    print('>' + item[2:])
     filename = '../database/' + item[2:11] + '.pfa'
     with open(filename, 'r') as filehandle:
         text = filehandle.read().splitlines()
