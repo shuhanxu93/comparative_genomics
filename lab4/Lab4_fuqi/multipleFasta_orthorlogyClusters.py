@@ -36,4 +36,8 @@ for i in range(len(hits1)):
                        f.write(hits1[i][0]+'\n'+hits1[i][1]+'\n'+hits1[i][2]+
                                '\n'+hits1[i][3]+'\n'+hits2[j][2]+'\n'+hits2[j][3]+
                                '\n'+hits3[k][2]+'\n'+hits3[k][3])
+                   with open("all_clusters.out",'a+') as g:
+                       g.write(hits1[i][0]+' '+hits1[i][2]+' '+hits2[j][2]+' '+hits3[k][2])
+                       g.write('\n')
+					
     
