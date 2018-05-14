@@ -1,0 +1,10 @@
+./09.fa.txt_orf00002 ./17.fa.txt_orf06616_rev ./24.fa.txt_orf01027_rev ./49.fa.txt_orf02035 ./51.fa.txt_orf01134
+./09.fa.txt_orf00003 ./17.fa.txt_orf09769 ./24.fa.txt_orf01000_rev ./49.fa.txt_orf05854 ./51.fa.txt_orf00518
+./09.fa.txt_orf00005 ./17.fa.txt_orf09767 ./24.fa.txt_orf00788 ./49.fa.txt_orf05853 ./51.fa.txt_orf01446_rev
+./09.fa.txt_orf00007_rev ./17.fa.txt_orf06612_rev ./24.fa.txt_orf00603_rev ./49.fa.txt_orf05709_rev ./51.fa.txt_orf00213_rev
+./09.fa.txt_orf00009_rev ./17.fa.txt_orf04128 ./24.fa.txt_orf01307 ./49.fa.txt_orf03024_rev ./51.fa.txt_orf01162_rev
+./09.fa.txt_orf00010_rev ./17.fa.txt_orf13211_rev ./24.fa.txt_orf01414_rev ./49.fa.txt_orf01845_rev ./51.fa.txt_orf02416
+./09.fa.txt_orf00011 ./17.fa.txt_orf12235_rev ./24.fa.txt_orf00195 ./49.fa.txt_orf00091 ./51.fa.txt_orf01658
+./09.fa.txt_orf00012 ./17.fa.txt_orf05832_rev ./24.fa.txt_orf01195 ./49.fa.txt_orf02087_rev ./51.fa.txt_orf00518
+./09.fa.txt_orf00016_rev ./17.fa.txt_orf05186_rev ./24.fa.txt_orf00887 ./49.fa.txt_orf03318_rev ./51.fa.txt_orf00165
+./09.fa.txt_orf00018 ./17.fa.txt_orf06719_rev ./24.fa.txt_orf00055 ./49.fa.txt_orf01467 ./51.fa.txt_orf01396_rev
