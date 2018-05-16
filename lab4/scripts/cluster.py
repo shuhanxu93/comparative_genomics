@@ -10,9 +10,9 @@ with open('51_parsed', 'r') as filehandle:
     list_51 = filehandle.read().splitlines()
     list_51_tags = [[line.split()[0], line.split()[2]] for line in list_51]
 
-combined = list_17_tags[:]
+combined = list_51_tags[:]
 
-for i in list_49_tags:
+for i in list_17_tags:
     for index, j in enumerate(combined):
         if i[0] == j[0]:
             combined[index].append(i[1])
@@ -20,7 +20,7 @@ for i in list_49_tags:
     else:
         combined.append(i)
             
-for i in list_51_tags:
+for i in list_49_tags:
     for index, j in enumerate(combined):
         if i[0] == j[0]:
             combined[index].append(i[1])
