@@ -11,14 +11,22 @@ with open('51_parsed', 'r') as filehandle:
     list_51_tags = [[line.split()[0], line.split()[2]] for line in list_51]
 
 combined = list_17_tags[:]
-for index, i in enumerate(combined[:]):
-    for j in list_49_tags:
+
+for i in list_49_tags:
+    for index, j in enumerate(combined):
         if i[0] == j[0]:
-            combined[index].append(j[1])
-for index, i in enumerate(combined[:]):
-    for j in list_51_tags:
+            combined[index].append(i[1])
+            break
+    else:
+        combined.append(i)
+            
+for i in list_51_tags:
+    for index, j in enumerate(combined):
         if i[0] == j[0]:
-            combined[index].append(j[1])
+            combined[index].append(i[1])
+            break
+    else:
+        combined.append(i)
 
 with open('cluster', 'w') as filehandle:
     for item in combined:
