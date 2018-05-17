@@ -21,7 +21,13 @@ for i in range(number):
     alist.append(s)
 adict = {index: value for index, value in enumerate(alist)}
 
-for afile in files:
-    with open(afile, 'r') as filehandle:
-        text = filehandle.read().split()
-        print(len(text))
+
+with open('multiFastafile', 'w') as filehandle:
+    for afile in files:
+        filehandle.write('>' + afile[:2] + '\n')
+        long_sequence = []
+        with open(afile, 'r') as filehandle2:
+            text = filehandle2.read().split()
+            long_sequence = [adict[int(number)] for number in text]
+            filehandle.write(''.join(long_sequence) + '\n')
+
