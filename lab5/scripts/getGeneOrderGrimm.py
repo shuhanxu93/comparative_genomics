@@ -21,7 +21,7 @@ for i in range (2, noFiles + 2):
 	# open this file
 
 	fileHandle = open (sys.argv [i])
-	lines = fileHandle.readlines ()
+	lines = fileHandle.read().splitlines()
 	
 	# assume the input is a single line
 	# of space-separated numbers
