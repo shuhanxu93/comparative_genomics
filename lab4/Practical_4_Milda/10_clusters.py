@@ -1,9 +1,9 @@
 # Open multi FASTA files with protein sequences
-sequences9=open("09.fa.txt.pfa","r")
-sequences17=open("17.fa.txt.pfa","r")
-sequences24=open("24.fa.txt.pfa","r")
-sequences49=open("49.fa.txt.pfa","r")
-sequences51=open("51.fa.txt.pfa","r")
+sequences9=open("09_oneline.fa.txt.pfa","r")
+sequences17=open("17_oneline.fa.txt.pfa","r")
+sequences24=open("24_oneline.fa.txt.pfa","r")
+sequences49=open("49_oneline.fa.txt.pfa","r")
+sequences51=open("51_oneline.fa.txt.pfa","r")
 
 # Read lines from these files
 sequences9=sequences9.readlines()
@@ -38,6 +38,14 @@ for x in sequences51:
     new_x=x.strip("\n")
     new_list_51.append(new_x)
 
+#Join all those lists together into one 
+all_sequences=[]
+all_sequences.extend(new_list_9)
+all_sequences.extend(new_list_17)
+all_sequences.extend(new_list_24)
+all_sequences.extend(new_list_49)
+all_sequences.extend(new_list_51)
+
 # Open file with clusters and read lines in it
 clusters=open("10_clusters.txt","r")
 clusters=clusters.readlines()
@@ -53,14 +61,16 @@ for x in striped_clusters:
     strings=x.split(" ")
     separated_clusters.append(strings)
 
-cluster_1=[]
+#print sequences for each ortholog
+count=0
 for x in separated_clusters:
-    for y in new_list_9:
-        if y=="%s%s" % ('>', x[0]):
-            index=new_list_9.index(y)
-            sequence=""
-            for i in range (20):
-                if ">" not in new_list_9[index+i]:
-                    print(new_list_9[index+i])
-                
-
+    count+=1
+    count2=str(count)
+    f=open(count2,"w")
+    for y in x:
+        for z in all_sequences:
+            if z=="%s%s" % ('>', y):
+                index=all_sequences.index(z)
+                print (">",y,file=f)
+                print (all_sequences[index+1], file=f)
+    f.close()
