@@ -3,10 +3,9 @@
 import random
 import sys
 
-files = sys.argv[1:]
+files = sys.argv[2:]
 
-
-number=5322
+number=sys.argv[1]
 length=20
 aas="ARNDCEQGHILKMFPSTWYV"
 
@@ -19,8 +18,8 @@ for i in range(number):
     for j in range(length):
         s+=aas[r20()]
     alist.append(s)
-adict = {index: value for index, value in enumerate(alist)}
 
+adict = {index: value for index, value in enumerate(alist)}
 
 with open('multiFastafile', 'w') as filehandle:
     for afile in files:
@@ -30,4 +29,3 @@ with open('multiFastafile', 'w') as filehandle:
             text = filehandle2.read().split()
             long_sequence = [adict[int(number)] for number in text]
             filehandle.write(''.join(long_sequence) + '\n')
-
