@@ -1,0 +1,16 @@
+Running:                      	grimm
+Input:                        	genomes_grimm.txt
+Genome:                       	Circular
+Signs:                        	Signed
+Number of Genomes:            	4
+Number of Genes:              	879
+Number of Chromosomes:        	0 (unichromosomal)
+
+Distance Matrix:
+
+   4
+09                  	0 855 852 841 
+17                  	855 0 849 863 
+49                  	852 849 0 855 
+51                  	841 863 855 0 
+
