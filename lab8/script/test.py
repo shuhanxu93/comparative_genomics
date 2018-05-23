@@ -2,20 +2,19 @@ import gzip
 import collections
 import matplotlib.pyplot as plt
 
-species_list = ['362663', '100226', '4932', '266117', '349124']
+species_list = ['394', '882']
 interactomes = {species: dict() for species in species_list}
 
 print('parsing file')
 
-with gzip.open('../data/protein.links.v10.5.txt.gz', 'r') as filehandle:
+with open('../data/test.txt', 'r') as filehandle:
     for line in filehandle:
-        line_decoded = line.decode('utf-8')
         for species in interactomes:
-            if line_decoded.startswith(species + '.'):
-                if line_decoded.split()[0] in interactomes[species]:
-                    interactomes[species][line_decoded.split()[0]] += 1
+            if line.startswith(species + '.'):
+                if line.split()[0] in interactomes[species]:
+                    interactomes[species][line.split()[0]] += 1
                 else:
-                    interactomes[species][line_decoded.split()[0]] = 1
+                    interactomes[species][line.split()[0]] = 1
 
 for species in species_list:
     size = len(interactomes[species])
