@@ -1,4 +1,4 @@
-import sys
+import system
 import gzip
 import collections
 import matplotlib.pyplot as plt
