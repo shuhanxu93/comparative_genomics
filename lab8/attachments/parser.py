@@ -21,8 +21,5 @@ for exp in experiments:
 
 top = sorted(range(len(overlaps)), key=lambda x: overlaps[x])[::-1]
 for index in top[:2]:
-    print("experiment no.:", index + 1)
-    print("number of overlaps:", overlaps[index])
-    print("gene set:")
     print(*experiments[index])
-    print()
+    print("number of overlaps:", overlaps[index], '\n')
