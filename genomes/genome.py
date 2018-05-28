@@ -1,3 +1,5 @@
+from Bio.SeqRecord import SeqRecord
+from Bio import SeqIO
 
 with open('09.fa.txt') as filehandle:
     genome = filehandle.read().splitlines()[1]
@@ -62,7 +64,7 @@ for index in range(1, len(f1_stop)):
         for start_coord in f1_met:
             if start_coord > prev_stop_coord:
                 if stop_coord - start_coord >= 110:
-                    gene_list.append([start_coord, stop_coord, 1])
+                    gene_list.append([start_coord, stop_coord + 2, 1])
                 break
 
 for index in range(1, len(f2_stop)):
@@ -72,7 +74,7 @@ for index in range(1, len(f2_stop)):
         for start_coord in f2_met:
             if start_coord > prev_stop_coord:
                 if stop_coord - start_coord >= 110:
-                    gene_list.append([start_coord, stop_coord, 2])
+                    gene_list.append([start_coord, stop_coord + 2, 2])
                 break
 
 for index in range(1, len(f3_stop)):
@@ -82,7 +84,7 @@ for index in range(1, len(f3_stop)):
         for start_coord in f3_met:
             if start_coord > prev_stop_coord:
                 if stop_coord - start_coord >= 110:
-                    gene_list.append([start_coord, stop_coord, 3])
+                    gene_list.append([start_coord, stop_coord + 2, 3])
                 break
 
 r1_stop.append(len(test) + 2)
@@ -93,7 +95,7 @@ for index in range(len(r1_stop) - 1):
         for start_coord in r1_met[::-1]:
             if start_coord < prev_stop_coord:
                 if start_coord - stop_coord >= 110:
-                    gene_list.append([stop_coord, start_coord, -1])
+                    gene_list.append([stop_coord - 2, start_coord, -1])
                 break
 
 r2_stop.append(len(test) + 2)
@@ -104,7 +106,7 @@ for index in range(len(r2_stop) - 1):
         for start_coord in r2_met[::-1]:
             if start_coord < prev_stop_coord:
                 if start_coord - stop_coord >= 110:
-                    gene_list.append([stop_coord, start_coord, -2])
+                    gene_list.append([stop_coord - 2, start_coord, -2])
                 break
 
 r3_stop.append(len(test) + 2)
@@ -115,7 +117,40 @@ for index in range(len(r3_stop) - 1):
         for start_coord in r3_met[::-1]:
             if start_coord < prev_stop_coord:
                 if start_coord - stop_coord >= 110:
-                    gene_list.append([stop_coord, start_coord, -3])
+                    gene_list.append([stop_coord - 2, start_coord, -3])
                 break
 
-print(len(gene_list))
+gene_list.sort()
+
+seq_record = SeqIO.parse('09.fa.txt', 'fasta').next()
+
+outseqrecords = []
+for index, orf in enumerate(gene_list):
+    sbegin, send, rf = orf
+    newseq = seq_record.seq[sbegin : send + 1]
+    if rf < 0:
+        newseq = newseq.reverse_complement()
+    newseq = newseq.translate(stop_symbol='')
+    name = '09.fa.txt_orf' + str(index + 1)
+    if rf < 0:
+        name = name + '_rev'
+    outseqrecords.append(SeqRecord(newseq,
+                                   id=name,
+                                   description=''))    
+
+SeqIO.write(outseqrecords, open('09_pred_prot', 'w'), 'fasta')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
