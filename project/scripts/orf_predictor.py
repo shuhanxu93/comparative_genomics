@@ -11,7 +11,7 @@ def complement(sequence):
     sequence_com = sequence.replace('A', 't').replace('C', 'g').replace('G', 'c').replace('T', 'a').upper()
     return sequence_com
 
-test = genome[:50000]
+test = genome[:]
 f1_met = []
 f2_met = []
 f3_met = []
