@@ -1,14 +1,17 @@
-from Bio.SeqRecord import SeqRecord
-from Bio import SeqIO
+import sys
 
-with open('09.fa.txt') as filehandle:
-    genome = filehandle.read().splitlines()[1]
+filename = sys.argv[1]
+
+with open(filename) as filehandle:
+    text = filehandle.read().splitlines()
+    genome_name = text[0]
+    genome = text[1]
 
 def complement(sequence):
     sequence_com = sequence.replace('A', 't').replace('C', 'g').replace('G', 'c').replace('T', 'a').upper()
     return sequence_com
 
-test = genome[:]
+test = genome[:50000]
 f1_met = []
 f2_met = []
 f3_met = []
@@ -132,8 +135,17 @@ for orf in gene_list[1:]:
             del new_gene_list[-1]
             new_gene_list.append(orf)
 
-print(len(new_gene_list))
-    
+with open(filename + '.predict', 'w') as filehandle:
+    filehandle.write(genome_name + '\n')
+    for number, orf in enumerate(new_gene_list, 1):
+        if orf[2] > 0:
+            filehandle.write('orf' + str(number) + ' ' + str(orf[0] + 1) + ' ' +
+                             str(orf[1] + 1) + ' ' + '+' + str(orf[2]) + ' ' +
+                             str(0) + '\n')
+        else:
+            filehandle.write('orf' + str(number) + ' ' + str(orf[1] + 1) + ' ' +
+                             str(orf[0] + 1) + ' ' + str(orf[2]) + ' ' + str(0)
+                             + '\n')
 
 '''
 seq_record = SeqIO.parse('09.fa.txt', 'fasta').next()
@@ -150,21 +162,7 @@ for index, orf in enumerate(gene_list):
         name = name + '_rev'
     outseqrecords.append(SeqRecord(newseq,
                                    id=name,
-                                   description=''))    
+                                   description=''))
 
 SeqIO.write(outseqrecords, open('09_pred_prot', 'w'), 'fasta')
 '''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
