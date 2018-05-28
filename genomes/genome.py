@@ -8,7 +8,7 @@ def complement(sequence):
     sequence_com = sequence.replace('A', 't').replace('C', 'g').replace('G', 'c').replace('T', 'a').upper()
     return sequence_com
 
-test = genome[:500000]
+test = genome[:]
 f1_met = []
 f2_met = []
 f3_met = []
@@ -122,6 +122,20 @@ for index in range(len(r3_stop) - 1):
 
 gene_list.sort()
 
+new_gene_list = []
+new_gene_list.append(gene_list[0])
+for orf in gene_list[1:]:
+    if new_gene_list[-1][1] - orf[0] + 1 <= 50:
+        new_gene_list.append(orf)
+    else:
+        if orf[1] - orf[0] > new_gene_list[-1][1] -new_gene_list[-1][0]:
+            del new_gene_list[-1]
+            new_gene_list.append(orf)
+
+print(len(new_gene_list))
+    
+
+'''
 seq_record = SeqIO.parse('09.fa.txt', 'fasta').next()
 
 outseqrecords = []
@@ -139,7 +153,7 @@ for index, orf in enumerate(gene_list):
                                    description=''))    
 
 SeqIO.write(outseqrecords, open('09_pred_prot', 'w'), 'fasta')
-
+'''
 
 
 
