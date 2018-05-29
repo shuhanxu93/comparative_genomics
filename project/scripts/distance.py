@@ -89,7 +89,21 @@ D_45 = math.sqrt ((GC_content_4 - GC_content_5)**2)
 
 # Distance matrix #
 
+minimum = min(D_12, D_13, D_14, D_15, D_23, D_24, D_25, D_34, D_35, D_45)
+
+D_12=D_12/minimum
+D_13=D_13/minimum
+D_14=D_14/minimum
+D_15=D_15/minimum
+D_23=D_23/minimum
+D_24=D_24/minimum
+D_25=D_25/minimum
+D_34=D_34/minimum
+D_35=D_35/minimum
+D_45=D_45/minimum
+
 distances = [[0, D_12, D_13, D_14, D_15], [D_12, 0, D_23, D_24, D_25], [D_13, D_23, 0, D_34, D_35], [D_14, D_24, D_34, 0, D_45], [D_15, D_25, D_35, D_45, 0]]
+
 
 genome_names = [genome_name1, genome_name2, genome_name3, genome_name4, genome_name5]
 genome_names = [name.replace(">./","") for name in genome_names]
