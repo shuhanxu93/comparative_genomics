@@ -89,14 +89,19 @@ D_45 = math.sqrt ((GC_content_4 - GC_content_5)**2)
 
 # Distance matrix #
 
-matrix = [[0, D_12, D_13, D_14, D_15], [D_12, 0, D_23, D_24, D_25], [D_13, D_23, 0, D_34, D_35], [D_14, D_24, D_34, 0, D_45], [D_15, D_25, D_35, D_45, 0]]
+distances = [[0, D_12, D_13, D_14, D_15], [D_12, 0, D_23, D_24, D_25], [D_13, D_23, 0, D_34, D_35], [D_14, D_24, D_34, 0, D_45], [D_15, D_25, D_35, D_45, 0]]
+
+genome_names = [genome_name1, genome_name2, genome_name3, genome_name4, genome_name5]
+genome_names = [name.replace(">./","") for name in genome_names]
 
 with open ("distances.txt","w") as f:
-    for line in matrix:
-        print (line, file=f)
+    names=" ".join(genome_names)
+    print (names, file=f)
+    for line in distances:
+        string=""
+        for x in line:
+            x=str(x)
+            string=string+x+" "
+        print (string.strip(), file=f)
 
 f.close()
-
-
-
-
