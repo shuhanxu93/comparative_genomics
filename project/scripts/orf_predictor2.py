@@ -125,15 +125,25 @@ for index in range(len(r3_stop) - 1):
 
 gene_list.sort()
 
-new_gene_list = []
-new_gene_list.append(gene_list[0])
-for orf in gene_list[1:]:
-    if new_gene_list[-1][1] - orf[0] + 1 <= 50:
-        new_gene_list.append(orf)
-    else:
-        if orf[1] - orf[0] > new_gene_list[-1][1] -new_gene_list[-1][0]:
-            del new_gene_list[-1]
-            new_gene_list.append(orf)
+def keep_longest(old_list):
+    """keep longest non-overlapping orfs"""
+
+    new_list = []
+    temp_list = []
+    new_list.append(old_list[0])
+    for orf in old_list[1:]:
+        if new_list[-1][1] - orf[0] + 1 <= 50:
+            new_list.append(orf)
+        else:
+            if orf[1] - orf[0] > new_list[-1][1] - new_list[-1][0]:
+                temp_list.append(new_list[-1])
+                del new_list[-1]
+                new_list.append(orf)
+
+    return new_list, temp_list
+
+
+new_gene_list, _ = keep_longest(gene_list)
 
 with open(filename + '.predict', 'w') as filehandle:
     filehandle.write(genome_name + '\n')
@@ -146,23 +156,3 @@ with open(filename + '.predict', 'w') as filehandle:
             filehandle.write('orf' + str(number) + ' ' + str(orf[1] + 1) + ' ' +
                              str(orf[0] + 1) + ' ' + str(orf[2]) + ' ' + str(0)
                              + '\n')
-
-'''
-seq_record = SeqIO.parse('09.fa.txt', 'fasta').next()
-
-outseqrecords = []
-for index, orf in enumerate(gene_list):
-    sbegin, send, rf = orf
-    newseq = seq_record.seq[sbegin : send + 1]
-    if rf < 0:
-        newseq = newseq.reverse_complement()
-    newseq = newseq.translate(stop_symbol='')
-    name = '09.fa.txt_orf' + str(index + 1)
-    if rf < 0:
-        name = name + '_rev'
-    outseqrecords.append(SeqRecord(newseq,
-                                   id=name,
-                                   description=''))
-
-SeqIO.write(outseqrecords, open('09_pred_prot', 'w'), 'fasta')
-'''
