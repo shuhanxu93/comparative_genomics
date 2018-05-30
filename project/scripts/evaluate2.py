@@ -101,6 +101,13 @@ TN = 6 * len(genome) - TP - FN - FP
 
 Sn = TP / (TP + FN)
 Sp = TP / (TP + FP)
+ACP = 0.25 * (TP / (TP + FN) + TP / (TP + FP) + TN / (TN + FP) + TN / (TN + FN))
+AC = 2 * ACP - 1
+true_len_ave = true_len / len(true_all)
+pred_len_ave = pred_len / len(pred_all)
 
-print('sensitivity:', Sn)
-print('specificity:', Sp)
+print("sensitivity:", Sn)
+print("specificity:", Sp)
+print("approximate correlation coefficient:", AC)
+print("average true length:", true_len_ave)
+print("average predicted length:", pred_len_ave)
