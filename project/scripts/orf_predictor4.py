@@ -2,6 +2,7 @@ import sys
 
 filename = sys.argv[1]
 min_len = int(sys.argv[2])
+max_overlap = int(sys.argv[3])
 
 with open(filename) as filehandle:
     text = filehandle.read().splitlines()
@@ -133,7 +134,7 @@ def keep_longest(old_list):
     temp_list = []
     new_list.append(old_list[0])
     for orf in old_list[1:]:
-        if new_list[-1][1] - orf[0] + 1 <= 50:
+        if new_list[-1][1] - orf[0] + 1 <= max_overlap:
             new_list.append(orf)
         else:
             if orf[1] - orf[0] > new_list[-1][1] - new_list[-1][0]:
@@ -153,7 +154,7 @@ def remove_overlap(new_list, temp_list):
                 new_temp_list.append(temp_orf)
                 break
             elif temp_orf[0] <= new_orf[1]:
-                if temp_orf[1] - new_orf[0] + 1 <= 50:
+                if temp_orf[1] - new_orf[0] + 1 <= max_overlap:
                     new_temp_list.append(temp_orf)
                 break
             else:
