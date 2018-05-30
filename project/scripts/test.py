@@ -1,50 +1,119 @@
-gene_list = [[1, 100], [2,200], [101,400], [210, 600], [500, 1000]]
-#gene_list = [[1, 101], [2,200], [101,400]]
+import sys
 
-def keep_longest(old_list):
-    """keep longest non-overlapping orfs"""
+genome_file = sys.argv[1]
+true_file = sys.argv[2]
+pred_file = sys.argv[3]
 
-    new_list = []
-    temp_list = []
-    new_list.append(old_list[0])
-    for orf in old_list[1:]:
-        if new_list[-1][1] - orf[0] + 1 <= 50:
-            new_list.append(orf)
-        else:
-            if orf[1] - orf[0] > new_list[-1][1] - new_list[-1][0]:
-                temp_list.append(new_list[-1])
-                del new_list[-1]
-                new_list.append(orf)
+with open(genome_file, 'r') as filehandle:
+    genome = filehandle.read().splitlines()[1]
 
-    return new_list, temp_list
+with open(true_file, 'r') as filehandle:
+    true_orfs = filehandle.read().splitlines()[1:]
 
-def remove_overlap(new_list, temp_list):
-    """remove any orf from temp_list which overlaps with any orf from new_list"""
+with open(pred_file, 'r') as filehandle:
+    pred_orfs = filehandle.read().splitlines()[1:]
 
-    new_temp_list = []
-    for temp_orf in temp_list:
-        for new_orf in new_list:
-            if temp_orf[1] < new_orf[0]:
-                new_temp_list.append(temp_orf)
-                break
-            elif temp_orf[0] <= new_orf[1]:
-                if temp_orf[1] - new_orf[0] + 1 <= 50:
-                    new_temp_list.append(temp_orf)
-                break
-            else:
-                pass
+true_f1 = []
+true_f2 = []
+true_f3 = []
+true_r1 = []
+true_r2 = []
+true_r3 = []
+for orf in true_orfs:
+    orfname, sbegin, send, rf, score = orf.split()
+    sbegin = int(sbegin)
+    send = int(send)
+    rf = int(rf)
+    if rf == 1:
+        true_f1.append([sbegin, send])
+    elif rf == 2:
+        true_f2.append([sbegin, send])
+    elif rf == 3:
+        true_f3.append([sbegin, send])
+    elif rf == -1:
+        true_r1.append([send, sbegin])
+    elif rf == -2:
+        true_r2.append([send, sbegin])
+    else:
+        true_r3.append([send, sbegin])
 
-    return new_temp_list
+true_all = true_f1 + true_f2 + true_f3 + true_r1 + true_r2 + true_r3
 
-new_gene_list, temp_gene_list = keep_longest(gene_list)
-print('new_gene_list', new_gene_list)
-print('temp_gene_list', temp_gene_list)
-temp_gene_list = remove_overlap(new_gene_list, temp_gene_list)
-print('temp_gene_list', temp_gene_list)
-while len(temp_gene_list) > 0:
-    old_gene_list = new_gene_list + temp_gene_list
-    old_gene_list.sort()
-    new_gene_list, temp_gene_list = keep_longest(old_gene_list)
-    temp_gene_list = remove_overlap(new_gene_list, temp_gene_list)
+pred_f1 = []
+pred_f2 = []
+pred_f3 = []
+pred_r1 = []
+pred_r2 = []
+pred_r3 = []
+for orf in pred_orfs:
+    orfname, sbegin, send, rf, score = orf.split()
+    sbegin = int(sbegin)
+    send = int(send)
+    rf = int(rf)
+    if rf == 1:
+        pred_f1.append([sbegin, send])
+    elif rf == 2:
+        pred_f2.append([sbegin, send])
+    elif rf == 3:
+        pred_f3.append([sbegin, send])
+    elif rf == -1:
+        pred_r1.append([send, sbegin])
+    elif rf == -2:
+        pred_r2.append([send, sbegin])
+    else:
+        pred_r3.append([send, sbegin])
 
-print('new_gene_list', new_gene_list)
+pred_all = pred_f1 + pred_f2 + pred_f3 + pred_r1 + pred_r2 + pred_r3
+
+intersection = []
+
+def add_intersection(true_list, pred_list):
+
+    combined_list = true_list + pred_list
+    combined_list.sort()
+    for index in range(len(combined_list) - 1):
+        if combined_list[index][0] <= combined_list[index + 1][1] and combined_list[index][1] >= combined_list[index + 1][0]:
+            intersection.append([max(combined_list[index][0], combined_list[index + 1][0]), min(combined_list[index][1], combined_list[index][1])])
+
+add_intersection(true_f1, pred_f1)
+add_intersection(true_f2, pred_f2)
+add_intersection(true_f3, pred_f3)
+add_intersection(true_r1, pred_r1)
+add_intersection(true_r2, pred_r2)
+add_intersection(true_r3, pred_r3)
+
+intersection_len = 0
+for coord in intersection:
+    intersection_len += coord[1] - coord[0] + 1
+
+true_len = 0
+for coord in true_all:
+    true_len += coord[1] - coord[0] + 1
+
+pred_len = 0
+for coord in pred_all:
+    pred_len += coord[1] - coord[0] + 1
+
+TP = intersection_len
+FN = true_len - intersection_len
+FP = pred_len - intersection_len
+TN = 6 * len(genome) - TP - FN - FP
+
+Sn = TP / (TP + FN)
+Sp = TP / (TP + FP)
+
+print('sensitivity:', Sn)
+print('specificity:', Sp)
+
+
+
+true_len_ave = true_len / len(true_all)
+pred_len_ave = pred_len / len(pred_all)
+
+
+
+
+
+
+
+
