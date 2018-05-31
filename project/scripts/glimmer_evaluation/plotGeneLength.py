@@ -11,7 +11,7 @@ with open(inFile) as f1:
         length = abs(int(line.split()[1])-int(line.split()[2]))
         lengths.append(length)
 
-with open(inFile) as f2:
+with open(inFile2) as f2:
     lengths2 = []
     lines2 = f2.readlines()[1:]
     for line2 in lines2:
