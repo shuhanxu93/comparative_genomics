@@ -12,7 +12,7 @@ data = df.values[:,1:]
 distances = np.zeros((len(organisms), len(organisms)))
 for i in range(len(organisms)):
     for j in range(len(organisms)):
-        distances[i, j] = np.sqrt(np.sum((data[i] - data[j]) ** 2))
+        distances[i, j] = np.dot(data[i], data[j])
 
 print(' '.join(map(str, organisms)))
 for row in distances:
