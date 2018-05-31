@@ -99,15 +99,19 @@ FN = true_len - intersection_len
 FP = pred_len - intersection_len
 TN = 6 * len(genome) - TP - FN - FP
 
+true_num = len(true_all)
+pred_num = len(pred_all)
+true_len_ave = true_len / true_num
+pred_len_ave = pred_len / pred_num
 Sn = TP / (TP + FN)
 Sp = TP / (TP + FP)
 ACP = 0.25 * (TP / (TP + FN) + TP / (TP + FP) + TN / (TN + FP) + TN / (TN + FN))
 AC = 2 * ACP - 1
-true_len_ave = true_len / len(true_all)
-pred_len_ave = pred_len / len(pred_all)
 
+print("number of true orf:", true_num)
+print("number of predicted orf:", pred_num)
+print("average true length:", true_len_ave)
+print("average predicted length:", pred_len_ave)
 print("sensitivity:", Sn)
 print("specificity:", Sp)
 print("approximate correlation coefficient:", AC)
-print("average true length:", true_len_ave)
-print("average predicted length:", pred_len_ave)
