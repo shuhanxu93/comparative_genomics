@@ -117,24 +117,19 @@ with open(args.inGeno) as f1:
     # Finding tata box in eukaryotes
     # from 5'-3', the index is of bases instead of codons.
     # the tatabox is 25-30 bp upstream the transcriptional start sites
-    # We assume the distance between the tata box and start condons are 30-100bp
+    # We 
     if args.type == 'euk':
         tataBox = ['TATAAAA','TATATAT','TATATAA','TATAAAT']
         tata_locs = []
+        # Locating TATABoxs
         for i in tataBox:
-            tata_loc = [m.start()//3 for m in re.finditer(i, geno)]
-            #'m.start()//3' change gene base index to codon index
+            tata_loc = [m.start() for m in re.finditer(i, geno)]
             tata_locs.extend(tata_loc)
-        
-        #tata_loc = [56950,56999,205700]
-        promoter_selects = []
-        for i in [0,1,2]:
-            promoter_select = []
-            for tata in tata_loc:
-                for item in allOverlapGenes[i]:
-                    for k in item :
-                        if k[0] >(tata-10) and k[0] < (tata+35):
-                            promoter_select.append(k)
+        # Distance(TATA box,start codon) = 45-70bp
+        for startcodon in genome :
+            if startcodon in [(tata_loc-45),(tata_loc-70):
+                trueStartcodon.append(startcodon)
+
                             # If two start codon meets the same standard,select the one corresponding to longer gene.
                             break
             promoter_selects.append(promoter_select)
