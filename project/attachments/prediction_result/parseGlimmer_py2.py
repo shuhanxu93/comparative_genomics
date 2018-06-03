@@ -49,4 +49,3 @@ for inline in file(args.glimmer):
                                    description=''))
 
 SeqIO.write(outseqrecords, open(outfilename, "w"), "fasta")
-
