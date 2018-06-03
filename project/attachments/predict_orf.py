@@ -9,11 +9,8 @@ with open(filename) as filehandle:
     genome_name = text[0]
     genome = text[1]
 
-def complement(sequence):
-    sequence_com = sequence.replace('A', 't').replace('C', 'g').replace('G', 'c').replace('T', 'a').upper()
-    return sequence_com
+genome_len = len(genome)
 
-test = genome[:]
 f1_met = []
 f2_met = []
 f3_met = []
@@ -21,15 +18,15 @@ r1_met = []
 r2_met = []
 r3_met = []
 
-f1_stop = [-3]
-f2_stop = [-3]
-f3_stop = [-3]
+f1_stop = []
+f2_stop = []
+f3_stop = []
 r1_stop = []
 r2_stop = []
 r3_stop = []
 
-for coordinate in range(0, len(test), 3):
-    codon = test[coordinate : coordinate + 3]
+for coordinate in range(0, genome_len, 3):
+    codon = genome[coordinate : coordinate + 3]
     if codon == 'ATG':
         f1_met.append(coordinate)
     if codon == 'CAT':
@@ -39,8 +36,8 @@ for coordinate in range(0, len(test), 3):
     if codon == 'TTA' or codon == 'CTA' or codon == 'TCA':
         r1_stop.append(coordinate + 2)
 
-for coordinate in range(1, len(test), 3):
-    codon = test[coordinate : coordinate + 3]
+for coordinate in range(1, genome_len, 3):
+    codon = genome[coordinate : coordinate + 3]
     if codon == 'ATG':
         f2_met.append(coordinate)
     if codon == 'CAT':
@@ -50,8 +47,8 @@ for coordinate in range(1, len(test), 3):
     if codon == 'TTA' or codon == 'CTA' or codon == 'TCA':
         r2_stop.append(coordinate + 2)
 
-for coordinate in range(2, len(test), 3):
-    codon = test[coordinate : coordinate + 3]
+for coordinate in range(2, genome_len, 3):
+    codon = genome[coordinate : coordinate + 3]
     if codon == 'ATG':
         f3_met.append(coordinate)
     if codon == 'CAT':
@@ -62,6 +59,8 @@ for coordinate in range(2, len(test), 3):
         r3_stop.append(coordinate + 2)
 
 gene_list = []
+
+f1_stop = [-3] + f1_stop#to consider beginning cases
 for index in range(1, len(f1_stop)):
     stop_coord = f1_stop[index]
     prev_stop_coord = f1_stop[index - 1]
@@ -72,6 +71,7 @@ for index in range(1, len(f1_stop)):
                     gene_list.append([start_coord, stop_coord + 2, 1])
                 break
 
+f2_stop = [-3] + f2_stop#to consider beginning cases
 for index in range(1, len(f2_stop)):
     stop_coord = f2_stop[index]
     prev_stop_coord = f2_stop[index - 1]
@@ -82,6 +82,7 @@ for index in range(1, len(f2_stop)):
                     gene_list.append([start_coord, stop_coord + 2, 2])
                 break
 
+f3_stop = [-3] + f3_stop#to consider beginning cases
 for index in range(1, len(f3_stop)):
     stop_coord = f3_stop[index]
     prev_stop_coord = f3_stop[index - 1]
@@ -92,7 +93,7 @@ for index in range(1, len(f3_stop)):
                     gene_list.append([start_coord, stop_coord + 2, 3])
                 break
 
-r1_stop.append(len(test) + 2)
+r1_stop = r1_stop + [genome_len + 2]#to consider end cases
 for index in range(len(r1_stop) - 1):
     stop_coord = r1_stop[index]
     prev_stop_coord = r1_stop[index + 1]
@@ -103,7 +104,7 @@ for index in range(len(r1_stop) - 1):
                     gene_list.append([stop_coord - 2, start_coord, -1])
                 break
 
-r2_stop.append(len(test) + 2)
+r2_stop = r2_stop + [genome_len + 2]#to consider end cases
 for index in range(len(r2_stop) - 1):
     stop_coord = r2_stop[index]
     prev_stop_coord = r2_stop[index + 1]
@@ -114,7 +115,7 @@ for index in range(len(r2_stop) - 1):
                     gene_list.append([stop_coord - 2, start_coord, -2])
                 break
 
-r3_stop.append(len(test) + 2)
+r3_stop = r3_stop + [genome_len + 2]#to consider end cases
 for index in range(len(r3_stop) - 1):
     stop_coord = r3_stop[index]
     prev_stop_coord = r3_stop[index + 1]
@@ -162,8 +163,8 @@ def remove_overlap(new_list, temp_list):
 
     return new_temp_list
 
-new_gene_list, temp_gene_list = keep_longest(gene_list)
-temp_gene_list = remove_overlap(new_gene_list, temp_gene_list)
+new_gene_list, temp_gene_list = keep_longest(gene_list)#if gene_A overlaps gene_B which overlaps gene_C and len(gene_A) < len(gene_B) < len(gene_C), only gene_C is kept
+temp_gene_list = remove_overlap(new_gene_list, temp_gene_list)#this step and the while loop below ensures that gene_A is also kept if gene_A does not overlap with gene_C
 while len(temp_gene_list) > 0:
     old_gene_list = new_gene_list + temp_gene_list
     old_gene_list.sort()
